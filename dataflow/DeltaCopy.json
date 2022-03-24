@@ -73,6 +73,7 @@
 				"     validateSchema: false,",
 				"     format: 'delta',",
 				"     fileSystem: 'delta',",
+				"     folderPath: 'creditcard',",
 				"     mergeSchema: false,",
 				"     autoCompact: false,",
 				"     optimizedWrite: false,",
