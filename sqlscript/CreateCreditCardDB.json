@@ -2,7 +2,7 @@
 	"name": "CreateCreditCardDB",
 	"properties": {
 		"content": {
-			"query": "CREATE DATABASE creditcard\n\nCREATE USER [synapse-ubalab] FROM EXTERNAL PROVIDER;\nALTER ROLE db_datareader ADD MEMBER [synapse-ubalab];\nALTER ROLE db_datawriter ADD MEMBER [synapse-ubalab];\nALTER ROLE db_ddladmin ADD MEMBER [synapse-ubalab];\nGO",
+			"query": "CREATE DATABASE creditcard2\n\nCREATE USER [synapse-ubalab] FROM EXTERNAL PROVIDER;\nALTER ROLE db_datareader ADD MEMBER [synapse-ubalab];\nALTER ROLE db_datawriter ADD MEMBER [synapse-ubalab];\nALTER ROLE db_ddladmin ADD MEMBER [synapse-ubalab];\nGO\n\nCREATE LOGIN [synapse-ubalab] FROM EXTERNAL PROVIDER;",
 			"metadata": {
 				"language": "sql"
 			},
