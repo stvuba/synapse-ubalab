@@ -107,7 +107,13 @@
 									"creditCardSQLOnDemandOut": {}
 								}
 							},
-							"staging": {},
+							"staging": {
+								"linkedService": {
+									"referenceName": "synapse-ubalab-WorkspaceDefaultStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "staging"
+							},
 							"compute": {
 								"coreCount": 8,
 								"computeType": "General"
@@ -123,7 +129,9 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('workspaceId'), '/dataflows/DeltaToSQLOnDemand')]"
+				"[concat(variables('workspaceId'), '/dataflows/DeltaToSQLOnDemand')]",
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('workspaceId'), '/linkedServices/synapse-ubalab-WorkspaceDefaultStorage')]"
 			]
 		},
 		{
@@ -433,8 +441,9 @@
 						"     insertable:true,",
 						"     updateable:false,",
 						"     upsertable:false,",
+						"     recreate:true,",
 						"     format: 'table',",
-						"     staged: false,",
+						"     staged: true,",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
 						"     saveOrder: 1,",
