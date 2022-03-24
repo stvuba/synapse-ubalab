@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 2",
+	"properties": {
+		"content": {
+			"query": "SELECT TOP (100) [Time]\n,[V1]\n,[V2]\n,[V3]\n,[V4]\n,[V5]\n,[V6]\n,[V7]\n,[V8]\n,[V9]\n,[V10]\n,[V11]\n,[V12]\n,[V13]\n,[V14]\n,[V15]\n,[V16]\n,[V17]\n,[V18]\n,[V19]\n,[V20]\n,[V21]\n,[V22]\n,[V23]\n,[V24]\n,[V25]\n,[V26]\n,[V27]\n,[V28]\n,[amount]\n,[class]\n,[id]\n,[name]\n,[state]\n,[alpha2]\n,[lon]\n,[lat]\n,[companyen]\n FROM [dbo].[transactions]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "creditcard",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

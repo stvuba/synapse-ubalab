@@ -9,7 +9,7 @@
 		"type": "AzureSqlDWTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "cc",
+			"schema": "dbo",
 			"table": "transactions"
 		}
 	}
