@@ -2,12 +2,12 @@
 	"name": "CreateCreditCardDB",
 	"properties": {
 		"content": {
-			"query": "CREATE DATABASE creditcard",
+			"query": "CREATE DATABASE creditcard\n\nCREATE USER [synapse-ubalab] FROM EXTERNAL PROVIDER;\nALTER ROLE db_datareader ADD MEMBER [synapse-ubalab];\nALTER ROLE db_datawriter ADD MEMBER [synapse-ubalab];\nALTER ROLE db_ddladmin ADD MEMBER [synapse-ubalab];\nGO",
 			"metadata": {
 				"language": "sql"
 			},
 			"currentConnection": {
-				"databaseName": "master",
+				"databaseName": "creditcard",
 				"poolName": "Built-in"
 			},
 			"resultLimit": -1
