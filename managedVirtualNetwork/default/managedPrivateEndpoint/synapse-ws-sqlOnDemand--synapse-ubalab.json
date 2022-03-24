@@ -1,0 +1,10 @@
+{
+	"name": "synapse-ws-sqlOnDemand--synapse-ubalab",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/9d46754e-1a5d-4594-a51a-b97a2b5e8fc9/resourceGroups/ubalab/providers/Microsoft.Synapse/workspaces/synapse-ubalab",
+		"groupId": "sqlOnDemand",
+		"fqdns": [
+			"synapse-ubalab-ondemand.14c4d47f-5cc2-4c06-92e3-b95dac29eb11.sql.azuresynapse.net"
+		]
+	}
+}
