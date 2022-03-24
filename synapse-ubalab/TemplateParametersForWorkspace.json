@@ -8,10 +8,10 @@
 		"AzureDataLakeStorage1_accountKey": {
 			"value": ""
 		},
-		"synapse-ubalab-WorkspaceDefaultSqlServer_connectionString": {
+		"AzureSynapseAnalyticsUba_connectionString": {
 			"value": ""
 		},
-		"AzureSynapseAnalyticsUba_connectionString": {
+		"synapse-ubalab-WorkspaceDefaultSqlServer_connectionString": {
 			"value": ""
 		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
