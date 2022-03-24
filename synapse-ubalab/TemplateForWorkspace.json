@@ -130,7 +130,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/dataflows/DeltaToSQLOnDemand')]",
-				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
 				"[concat(variables('workspaceId'), '/linkedServices/synapse-ubalab-WorkspaceDefaultStorage')]"
 			]
 		},
@@ -342,6 +341,7 @@
 						"     validateSchema: false,",
 						"     format: 'delta',",
 						"     fileSystem: 'delta',",
+						"     folderPath: 'creditcard',",
 						"     mergeSchema: false,",
 						"     autoCompact: false,",
 						"     optimizedWrite: false,",
