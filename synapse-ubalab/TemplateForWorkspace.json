@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'synapse-ubalab-WorkspaceDefaultSqlServer'"
 		},
+		"AzureSynapseAnalyticsUba_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSynapseAnalyticsUba'"
+		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://datalakestorageubalab.dfs.core.windows.net"
@@ -72,8 +76,83 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('workspaceId'), '/dataflows/DeltaCopy')]",
+				"[concat(variables('workspaceId'), '/dataflows/DeltaCopy')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/DeltaToSQLOnDemand')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "DeltaToSQLOnDemand",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "1.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DeltaToSQLOnDemand",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"creditcardDeltaIn": {},
+									"creditCardSQLOnDemandOut": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "synapse-ubalab-WorkspaceDefaultStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "staging"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/dataflows/DeltaToSQLOnDemand')]",
+				"[concat(variables('workspaceId'), '/linkedServices/synapse-ubalab-WorkspaceDefaultStorage')]",
 				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/AzureSynapseAnalyticsCreditCardTable')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSynapseAnalyticsUba",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "cc",
+					"table": "transactions"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/AzureSynapseAnalyticsUba')]"
 			]
 		},
 		{
@@ -266,77 +345,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/WorkspaceSystemIdentity')]",
-			"type": "Microsoft.Synapse/workspaces/credentials",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"type": "ManagedIdentity",
-				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/default')]",
-			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/default/AzureDataLakeStorage752')]",
-			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"privateLinkResourceId": "/subscriptions/9d46754e-1a5d-4594-a51a-b97a2b5e8fc9/resourceGroups/ubalab/providers/Microsoft.Storage/storageAccounts/datalakestorageubalab",
-				"groupId": "dfs"
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/default/synapse-ws-custstgacct--synapse-ubalab-synapsedatalakubalab')]",
-			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"privateLinkResourceId": "/subscriptions/9d46754e-1a5d-4594-a51a-b97a2b5e8fc9/resourceGroups/ubalab/providers/Microsoft.Storage/storageAccounts/synapsedatalakubalab",
-				"groupId": "dfs"
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/default/synapse-ws-sql--synapse-ubalab')]",
-			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"privateLinkResourceId": "/subscriptions/9d46754e-1a5d-4594-a51a-b97a2b5e8fc9/resourceGroups/ubalab/providers/Microsoft.Synapse/workspaces/synapse-ubalab",
-				"groupId": "sql",
-				"fqdns": [
-					"synapse-ubalab.14c4d47f-5cc2-4c06-92e3-b95dac29eb11.sql.azuresynapse.net"
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/default/synapse-ws-sqlOnDemand--synapse-ubalab')]",
-			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"privateLinkResourceId": "/subscriptions/9d46754e-1a5d-4594-a51a-b97a2b5e8fc9/resourceGroups/ubalab/providers/Microsoft.Synapse/workspaces/synapse-ubalab",
-				"groupId": "sqlOnDemand",
-				"fqdns": [
-					"synapse-ubalab-ondemand.14c4d47f-5cc2-4c06-92e3-b95dac29eb11.sql.azuresynapse.net"
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('workspaceName'), '/DeltaToSQLOnDemand')]",
 			"type": "Microsoft.Synapse/workspaces/dataflows",
 			"apiVersion": "2019-06-01-preview",
@@ -430,17 +438,27 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/WorkspaceSystemIdentity')]",
+			"type": "Microsoft.Synapse/workspaces/credentials",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "ManagedIdentity",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/CreateCreditCardDB')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"content": {
-					"query": "CREATE DATABASE creditcard",
+					"query": "CREATE DATABASE creditcard\n\nCREATE USER [synapse-ubalab] FROM EXTERNAL PROVIDER;\nALTER ROLE db_datareader ADD MEMBER [synapse-ubalab];\nALTER ROLE db_datawriter ADD MEMBER [synapse-ubalab];\nALTER ROLE db_ddladmin ADD MEMBER [synapse-ubalab];\nGO",
 					"metadata": {
 						"language": "sql"
 					},
 					"currentConnection": {
-						"databaseName": "master",
+						"databaseName": "creditcard",
 						"poolName": "Built-in"
 					},
 					"resultLimit": -1
@@ -450,82 +468,83 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/AzureSynapseAnalyticsCreditCardTable')]",
-			"type": "Microsoft.Synapse/workspaces/datasets",
+			"name": "[concat(parameters('workspaceName'), '/default')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default/AzureDataLakeStorage752')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "synapse-ubalab-WorkspaceDefaultSqlServer",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"DBName": "creditcard"
-					}
-				},
-				"annotations": [],
-				"type": "AzureSqlDWTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "cc",
-					"table": "transactions"
-				}
+				"privateLinkResourceId": "/subscriptions/9d46754e-1a5d-4594-a51a-b97a2b5e8fc9/resourceGroups/ubalab/providers/Microsoft.Storage/storageAccounts/datalakestorageubalab",
+				"groupId": "dfs"
 			},
 			"dependsOn": [
-				"[concat(variables('workspaceId'), '/linkedServices/synapse-ubalab-WorkspaceDefaultSqlServer')]"
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/DeltaToSQLOnDemand')]",
-			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"name": "[concat(parameters('workspaceName'), '/default/synapse-ws-custstgacct--synapse-ubalab-synapsedatalakubalab')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
-				"activities": [
-					{
-						"name": "DeltaToSQLOnDemand",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "1.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "DeltaToSQLOnDemand",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"creditcardDeltaIn": {},
-									"creditCardSQLOnDemandOut": {}
-								}
-							},
-							"staging": {
-								"linkedService": {
-									"referenceName": "synapse-ubalab-WorkspaceDefaultStorage",
-									"type": "LinkedServiceReference"
-								},
-								"folderPath": "staging"
-							},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": []
+				"privateLinkResourceId": "/subscriptions/9d46754e-1a5d-4594-a51a-b97a2b5e8fc9/resourceGroups/ubalab/providers/Microsoft.Storage/storageAccounts/synapsedatalakubalab",
+				"groupId": "dfs"
 			},
 			"dependsOn": [
-				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
-				"[concat(variables('workspaceId'), '/dataflows/DeltaToSQLOnDemand')]",
-				"[concat(variables('workspaceId'), '/linkedServices/synapse-ubalab-WorkspaceDefaultStorage')]"
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default/synapse-ws-sql--synapse-ubalab')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"privateLinkResourceId": "/subscriptions/9d46754e-1a5d-4594-a51a-b97a2b5e8fc9/resourceGroups/ubalab/providers/Microsoft.Synapse/workspaces/synapse-ubalab",
+				"groupId": "sql",
+				"fqdns": [
+					"synapse-ubalab.14c4d47f-5cc2-4c06-92e3-b95dac29eb11.sql.azuresynapse.net"
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default/synapse-ws-sqlOnDemand--synapse-ubalab')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"privateLinkResourceId": "/subscriptions/9d46754e-1a5d-4594-a51a-b97a2b5e8fc9/resourceGroups/ubalab/providers/Microsoft.Synapse/workspaces/synapse-ubalab",
+				"groupId": "sqlOnDemand",
+				"fqdns": [
+					"synapse-ubalab-ondemand.14c4d47f-5cc2-4c06-92e3-b95dac29eb11.sql.azuresynapse.net"
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/AzureSynapseAnalyticsUba')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureSynapseAnalyticsUba_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
 			]
 		}
 	]

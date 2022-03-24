@@ -11,6 +11,9 @@
 		"synapse-ubalab-WorkspaceDefaultSqlServer_connectionString": {
 			"value": ""
 		},
+		"AzureSynapseAnalyticsUba_connectionString": {
+			"value": ""
+		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"value": "https://datalakestorageubalab.dfs.core.windows.net"
 		},
