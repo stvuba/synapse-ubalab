@@ -146,7 +146,7 @@
 				"type": "AzureSqlDWTable",
 				"schema": [],
 				"typeProperties": {
-					"schema": "cc",
+					"schema": "dbo",
 					"table": "transactions"
 				}
 			},
@@ -481,6 +481,46 @@
 						"poolName": "Built-in"
 					},
 					"resultLimit": -1
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 1')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseParquetFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseParquetFormat] \n\tWITH ( FORMAT_TYPE = PARQUET)\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'delta_synapsedatalakubalab_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [delta_synapsedatalakubalab_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://delta@synapsedatalakubalab.dfs.core.windows.net' \n\t)\nGO\n\nCREATE EXTERNAL TABLE transactions (\n\t[Time] real,\n\t[V1] real,\n\t[V2] real,\n\t[V3] real,\n\t[V4] real,\n\t[V5] real,\n\t[V6] real,\n\t[V7] real,\n\t[V8] real,\n\t[V9] real,\n\t[V10] real,\n\t[V11] real,\n\t[V12] real,\n\t[V13] real,\n\t[V14] real,\n\t[V15] real,\n\t[V16] real,\n\t[V17] real,\n\t[V18] real,\n\t[V19] real,\n\t[V20] real,\n\t[V21] real,\n\t[V22] real,\n\t[V23] real,\n\t[V24] real,\n\t[V25] real,\n\t[V26] real,\n\t[V27] real,\n\t[V28] real,\n\t[amount] real,\n\t[class] int,\n\t[id] nvarchar(4000),\n\t[name] nvarchar(4000),\n\t[state] nvarchar(4000),\n\t[alpha2] nvarchar(4000),\n\t[lon] real,\n\t[lat] real,\n\t[companyen] nvarchar(4000)\n\t)\n\tWITH (\n\tLOCATION = 'creditcard/**',\n\tDATA_SOURCE = [delta_synapsedatalakubalab_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseParquetFormat]\n\t)\nGO\n\n\nSELECT TOP 100 * FROM cc.transactions\nGO",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "creditcard",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 2')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "SELECT TOP (100) [Time]\n,[V1]\n,[V2]\n,[V3]\n,[V4]\n,[V5]\n,[V6]\n,[V7]\n,[V8]\n,[V9]\n,[V10]\n,[V11]\n,[V12]\n,[V13]\n,[V14]\n,[V15]\n,[V16]\n,[V17]\n,[V18]\n,[V19]\n,[V20]\n,[V21]\n,[V22]\n,[V23]\n,[V24]\n,[V25]\n,[V26]\n,[V27]\n,[V28]\n,[amount]\n,[class]\n,[id]\n,[name]\n,[state]\n,[alpha2]\n,[lon]\n,[lat]\n,[companyen]\n FROM [dbo].[transactions]",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "creditcard",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
 				},
 				"type": "SqlQuery"
 			},
