@@ -1,0 +1,17 @@
+{
+	"name": "CreateCreditCardDB",
+	"properties": {
+		"content": {
+			"query": "CREATE DATABASE creditcard",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": -1
+		},
+		"type": "SqlQuery"
+	}
+}

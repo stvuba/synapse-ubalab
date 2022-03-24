@@ -1,0 +1,19 @@
+{
+	"name": "AzureSynapseAnalyticsCreditCardTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "synapse-ubalab-WorkspaceDefaultSqlServer",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"DBName": "creditcard"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "cc",
+			"table": "transactions"
+		}
+	}
+}
