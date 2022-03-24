@@ -441,7 +441,7 @@
 						"     insertable:true,",
 						"     updateable:false,",
 						"     upsertable:false,",
-						"     recreate:true,",
+						"     truncate:true,",
 						"     format: 'table',",
 						"     staged: true,",
 						"     skipDuplicateMapInputs: true,",
