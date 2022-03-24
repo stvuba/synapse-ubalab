@@ -20,6 +20,10 @@
 						"type": "DataFlowReference"
 					},
 					"staging": {
+						"linkedService": {
+							"referenceName": "synapse-ubalab-WorkspaceDefaultStorage",
+							"type": "LinkedServiceReference"
+						},
 						"folderPath": "staging"
 					},
 					"compute": {
